@@ -1,33 +1,86 @@
-import React, {useEffect, useState} from 'react';
-import {useColorScheme, Text, View, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
 
 const App = () => {
-  const [theme, setTheme] = useState(styles.light);
+  const [count, setCount] = useState(0);
+  const [title, setTitle] = useState('');
+  const [theme, setTheme] = useState(light);
   const colorScheme = useColorScheme();
 
   useEffect(() => {
-    setTheme(colorScheme === 'light' ? styles.light : styles.dark);
-    console.log('thema: ' + colorScheme);
+    setTheme(colorScheme === 'light' ? light : dark);
   }, [colorScheme]);
 
+  useEffect(() => {
+    count > 0 && count % 10 === 0
+      ? setTitle(`Parabéns por clicar ${count} vezes`)
+      : setTitle('');
+  }, [count]);
+
   return (
-    <View style={[styles.container, theme]}>
-      <Text style={[styles.text, theme]}>useColorScheme(): {colorScheme}</Text>
+    <View style={theme.container}>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.text}>você clicou {count} vezes.</Text>
+      <TouchableOpacity
+        onPress={() => setCount(count + 1)}
+        style={styles.button}>
+        <Text style={styles.buttonText}>adicionar</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 export default App;
 
-const styles = StyleSheet.create({
-  light: {
+const light = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#fff',
-    color: '#000',
   },
-  dark: {
+});
+
+const dark = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#000',
-    color: '#fff',
   },
-  text: {fontSize: 26, fontWeight: '700'},
-  container: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+});
+
+const styles = StyleSheet.create({
+  title: {
+    marginBottom: 20,
+    marginHorizontal: 10,
+    fontSize: 30,
+    color: '#f30',
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  text: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: '#f60',
+  },
+  button: {
+    width: 200,
+    height: 60,
+    backgroundColor: '#f60',
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: 20,
+    color: '#fff',
+    fontWeight: '700',
+  },
 });
